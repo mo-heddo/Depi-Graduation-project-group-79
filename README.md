@@ -149,5 +149,16 @@ Consistent accuracy (~53–54%) indicates weak but meaningful predictive power i
 
 LightGBM Classifier selected as the final model for deployment — offering the best tradeoff between speed, accuracy, and interpretability for stock direction prediction.
 
+** Flask API Deployment Plan
+
+Main Steps:
+
+Save the trained model using joblib or pickle.
+
+Create a Flask app with a /predict endpoint to receive input and return predictions.
+
+Test locally using Postman or curl to ensure correct responses.
+
+Deploy online on platforms like Render, Railway, or Heroku for public API access
 ---
 
