@@ -1,103 +1,83 @@
-Depi Graduation Project — Group 79
-About the Project
+# <span style="font-family:Arial, sans-serif;">Depi Graduation Project — Group 79</span>
 
-This Stock Analysis Data Science Project analyzes five years of historical data for all companies in the S&P 500 index to uncover patterns and predict market movements.
+## <span style="font-family:Arial, sans-serif;">About the Project</span>
 
-Despite market volatility, stock data contains valuable insights that can be extracted using data science and machine learning. This project demonstrates how to analyze, visualize, and predict market trends using advanced models.
+This <strong>Stock Analysis Data Science Project</strong> analyzes <em>five years of historical data</em> for all companies in the <strong>S&P 500 index</strong> to uncover patterns and predict market movements.
 
-Dataset Overview
+Stock data is volatile, yet it contains valuable insights. This project demonstrates how <strong>data science and machine learning</strong> can be applied to analyze, visualize, and predict trends.
 
-Source: Kaggle – camnugent/sandp500
+---
 
-Size: ~619,000 rows × 7 columns
+## <span style="font-family:Arial, sans-serif;">Dataset Overview</span>
 
-Data Range: 5 years of daily prices (Open, High, Low, Close, Volume)
+- **Source:** <a href="https://www.kaggle.com/datasets/camnugent/sandp500">Kaggle – camnugent/sandp500</a>  
+- **Size:** ~619,000 rows × 7 columns  
+- **Data Range:** 5 years of daily prices (Open, High, Low, Close, Volume)  
+- **Tools:** Python, Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, XGBoost, LightGBM  
 
-Tools: Python, Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn, XGBoost, LightGBM
+After cleaning and preprocessing:  
+- Missing values and duplicates removed  
+- Dates standardized and sorted chronologically  
+- Final dataset size: **~593,000 clean records**
 
-After cleaning and preprocessing:
+---
 
-Missing values and duplicates were removed.
+## <span style="font-family:Arial, sans-serif;">Objectives</span>
 
-Dates were standardized and sorted chronologically.
+1. Analyze large-scale stock market data efficiently  
+2. Generate <em>technical</em> and <em>temporal</em> indicators to capture trends  
+3. Build <strong>classification models</strong> to predict next-day stock movement (Up/Down)  
+4. Evaluate models and interpret feature importance
 
-Final dataset size: ~593,000 clean records.
+---
 
-Objectives
+## <span style="font-family:Arial, sans-serif;">Workflow Summary</span>
 
-Analyze large-scale stock market data efficiently.
+### 1. Data Loading & Cleaning
+- Imported using `kagglehub`  
+- Dropped missing values and converted `date` to datetime objects  
+- Sorted by stock symbol and date  
 
-Generate technical and temporal indicators to capture trends.
+### 2. Exploratory Data Analysis
+- Line charts for top 5 traded stocks  
+- Bar charts for total trading volume  
+- Observation: Tech stocks (AAPL, FB) outperformed industrial/financial sectors
 
-Build classification models to predict next-day stock movement (Up/Down).
+### 3. Feature Engineering
+- **Technical Indicators:** SMA_20, SMA_50, RSI_14, volatility_20, volatility_50  
+- **Temporal Features:** day_of_week, is_month_end, is_quarter_end  
+- **Target Features:** Next_Day_Return, Target_UpDown (Up=1, Down=0)
 
-Evaluate models and interpret feature importance.
+### 4. Key Observations
+- SMA crossovers indicate bullish/bearish trends  
+- RSI peaks/troughs highlight overbought/oversold conditions  
+- Volatility spikes show high-risk periods  
+- Mild day-of-week and month-end effects observed
 
-Workflow Summary
-1. Data Loading & Cleaning
+---
 
-Imported using kagglehub.
+## <span style="font-family:Arial, sans-serif;">Machine Learning Models</span>
 
-Dropped missing values and converted date to datetime objects.
+**Features Used:** volatility_20, volatility_50, SMA_20, SMA_50, RSI_14, day_of_week, is_month_end, is_quarter_end, daily_return  
+**Target:** Target_UpDown = 1 if Next_Day_Return > 0, else 0  
 
-Sorted by stock symbol and date.
+| Model             | Accuracy | Notes |
+| ----------------- | -------- | ----- |
+| LightGBM          | 53.6%    | Best balance between speed and performance after tuning |
+| XGBoost           | 53.5%    | Reliable, interpretable, good generalization |
+| Random Forest     | 52.8%    | Stable ensemble, simple baseline |
 
-2. Exploratory Data Analysis
+**Top Features:** RSI_14, volatility_20, SMA_20, daily_return, day_of_week  
 
-Line charts for top 5 traded stocks.
+- LightGBM selected as the final model for deployment
 
-Bar charts for total trading volume.
+---
 
-Observations: Tech stocks (AAPL, FB) outperformed industrial and financial sectors.
+## <span style="font-family:Arial, sans-serif;">Flask API Deployment Plan</span>
 
-3. Feature Engineering
+Main Steps:  
+1. Save the trained LightGBM model using `joblib` or `pickle`  
+2. Create a Flask app with a `/predict` endpoint  
+3. Test locally using Postman or curl  
+4. Deploy online on platforms like Render, Railway, or Heroku
 
-Technical Indicators:
-
-SMA_20, SMA_50 (trends)
-
-RSI_14 (momentum)
-
-volatility_20, volatility_50 (risk)
-
-Temporal Features: day_of_week, is_month_end, is_quarter_end
-
-Target Features: Next_Day_Return, Target_UpDown (binary: Up=1, Down=0)
-
-4. Key Observations
-
-SMA crossovers indicate bullish/bearish trends.
-
-RSI peaks/troughs show overbought/oversold conditions.
-
-Volatility spikes highlight high-risk periods.
-
-Day-of-week and month-end effects reveal mild cyclical behavior.
-
-Machine Learning Models
-
-Features Used: volatility_20, volatility_50, SMA_20, SMA_50, RSI_14, day_of_week, is_month_end, is_quarter_end, daily_return
-Target: Target_UpDown = 1 if Next_Day_Return > 0, else 0
-
-Model	Accuracy	Notes
-LightGBM	53.6%	Best balance between speed and performance after tuning
-XGBoost	53.5%	Reliable, interpretable, good generalization
-Random Forest	52.8%	Stable ensemble, simple baseline
-
-Top Features: RSI_14, volatility_20, SMA_20, daily_return, day_of_week
-
-Slight accuracy improvement after tuning LightGBM (0.535 → 0.536).
-
-LightGBM chosen as the final model for deployment.
-
-Flask API Deployment Plan
-
-Main Steps:
-
-Save the trained LightGBM model using joblib or pickle.
-
-Create a Flask app with a /predict endpoint to receive inputs and return predictions.
-
-Test locally using Postman or curl.
-
-Deploy online on platforms like Render, Railway, or Heroku for public API access.
