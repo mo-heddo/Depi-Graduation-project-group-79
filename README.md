@@ -71,6 +71,41 @@ After cleaning and preprocessing:
 
 - LightGBM selected as the final model for deployment
 
+  <span style="font-family:Arial, sans-serif;">Hyperparameter Tuning</span>
+
+Purpose:
+Improve the LightGBM classifier’s predictive performance by adjusting its hyperparameters.
+
+Method:
+
+Used TimeSeriesSplit to preserve the chronological order of stock data
+
+Applied GridSearchCV to test combinations of parameters
+
+Parameters Tuned:
+
+Parameter	Values Tested
+n_estimators	200, 500
+max_depth	3, 5, 7
+learning_rate	0.05, 0.1
+class_weight	balanced
+
+Best Configuration:
+
+max_depth=7
+
+learning_rate=0.05
+
+n_estimators=200
+
+class_weight='balanced'
+
+Outcome:
+
+Accuracy improved slightly from 53.5% → 53.6%
+
+Better balance in predicting Up (1) vs Down (0) movements
+
 ---
 
 ## <span style="font-family:Arial, sans-serif;">Flask API Deployment Plan</span>
